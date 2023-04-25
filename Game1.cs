@@ -9,6 +9,10 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
+    Texture2D sprite;
+
+    Pawn pawn;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -28,6 +32,8 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // TODO: use this.Content to load your game content here
+        sprite = Content.Load<Texture2D>("pawn");
+        pawn = new Pawn(0, 0, sprite);
     }
 
     protected override void Update(GameTime gameTime)
@@ -45,6 +51,10 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         // TODO: Add your drawing code here
+        _spriteBatch.Begin();
+        pawn.Draw(_spriteBatch);
+        _spriteBatch.End();
+
 
         base.Draw(gameTime);
     }
