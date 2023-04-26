@@ -4,10 +4,10 @@ using System;
 
 public abstract class Piece
 {
-    protected int row {get; set; }
-    protected int column {get; set; }
-    protected Texture2D sprite {get; set; }
-    protected bool isBlack {get; set; }
+    protected int row { get; set; }
+    protected int column { get; set; }
+    protected Texture2D sprite { get; set; }
+    protected bool isBlack { get; set; }
 
     public Piece(int x, int y, Texture2D sp, bool black = false)
     {

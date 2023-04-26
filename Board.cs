@@ -5,7 +5,7 @@ using System;
 public class Board
 {
     Texture2D tile;
-    int tileSize = 30;
+    Vector2 tileSize;
 
     public Board(Texture2D t)
     {
@@ -14,8 +14,10 @@ public class Board
 
     public void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
     {
-        Vector2 tilePos = new Vector2(graphicsDevice.Viewport.Bounds.Width / 2 - tileSize * 4, graphicsDevice.Viewport.Bounds.Height / 2 - tileSize * 4);
-        Rectangle tileRect = new Rectangle((int)tilePos.X, (int)tilePos.Y, tileSize, tileSize);
+        tileSize = new Vector2(graphicsDevice.Viewport.Bounds.Height / 16); // Sets tilesize so that 16 tiles fit from top to bottom.
+
+        Vector2 tilePos = new Vector2(graphicsDevice.Viewport.Bounds.Width / 2 - tileSize.X * 4, graphicsDevice.Viewport.Bounds.Height / 2 - tileSize.Y * 4);
+        Rectangle tileRect = new Rectangle((int)tilePos.X, (int)tilePos.Y, (int)tileSize.X, (int)tileSize.Y);
 
         for (int i = 0; i < 8; ++i)
         {
@@ -26,9 +28,9 @@ public class Board
                 else
                     spriteBatch.Draw(tile, tileRect, Color.Black);
 
-                tileRect.Y += tileSize;
+                tileRect.Y += (int)tileSize.Y;
             }
-            tileRect.X += tileSize;
+            tileRect.X += (int)tileSize.X;
             tileRect.Y = (int)tilePos.Y;
         }
     }

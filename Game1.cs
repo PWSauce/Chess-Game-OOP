@@ -29,6 +29,10 @@ public class Game1 : Game
     {
         // TODO: Add your initialization logic here
         pieces = new Piece[8];
+
+        _graphics.PreferredBackBufferWidth = 1920;
+        _graphics.PreferredBackBufferHeight = 1080;
+        _graphics.ApplyChanges();
         base.Initialize();
     }
 
@@ -42,7 +46,6 @@ public class Game1 : Game
         pawn = new Pawn(0, 0, sprite, true);
         pieces[0] = pawn;
         board = new Board(tile);
-
     }
 
     protected override void Update(GameTime gameTime)
