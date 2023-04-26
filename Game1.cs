@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace ChessGameOOP;
 
@@ -10,8 +11,12 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
 
     Texture2D sprite;
+    Texture2D tile;
 
     Pawn pawn;
+    Piece[] pieces;
+
+    Board board;
 
     public Game1()
     {
@@ -23,7 +28,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-
+        pieces = new Piece[8];
         base.Initialize();
     }
 
@@ -33,7 +38,11 @@ public class Game1 : Game
 
         // TODO: use this.Content to load your game content here
         sprite = Content.Load<Texture2D>("pawn");
-        pawn = new Pawn(0, 0, sprite);
+        tile = Content.Load<Texture2D>("Square");
+        pawn = new Pawn(0, 0, sprite, true);
+        pieces[0] = pawn;
+        board = new Board(tile);
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -52,7 +61,8 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-        pawn.Draw(_spriteBatch);
+        pieces[0].Draw(_spriteBatch);
+        board.Draw(_spriteBatch, _graphics.GraphicsDevice);
         _spriteBatch.End();
 
 
