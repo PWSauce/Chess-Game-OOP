@@ -5,60 +5,85 @@ using System.Collections.Generic;
 
 public class Board
 {
-    Vector2 tileSize;
-
-    List<Piece> pieces;
-    List<Tile> tiles;
+    Grid pieces;
+    Grid tiles;
 
     public Board(GraphicsDevice graphicsDevice)
     {
-        Initialize(graphicsDevice);
-    }
+        int tileSize = graphicsDevice.Viewport.Height / 16;
+        int gridHeight = graphicsDevice.Viewport.Height / 2;
+        int gridWidth = graphicsDevice.Viewport.Width / 2 - tileSize * 4;
+        Vector2 gridPos = new Vector2(gridWidth, gridHeight - tileSize * 4);
 
-    void Initialize(GraphicsDevice graphicsDevice)
-    {
-        tileSize = new Vector2(graphicsDevice.Viewport.Bounds.Height / 16); // Sets tilesize so that 16 tiles fit from top to bottom.
+        pieces = new Grid(new Vector2(8, 8), gridPos, tileSize);
+        tiles = new Grid(new Vector2(8, 8), gridPos, tileSize);
 
-        pieces = new List<Piece>();
-        tiles = new List<Tile>();
-    }
+        string[] pieceCoord = new []
+        {
+            "PPPPPPPP",
+            "RGBQKBGR"
+        };
 
-    public void LoadContent(GraphicsDevice graphicsDevice, Texture2D tileSprite)
-    {
-        Vector2 tilePos = new Vector2(graphicsDevice.Viewport.Bounds.Width / 2 - tileSize.X * 4, graphicsDevice.Viewport.Bounds.Height / 2 - tileSize.Y * 4);
-        Rectangle tileRect = new Rectangle((int)tilePos.X, (int)tilePos.Y, (int)tileSize.X, (int)tileSize.Y);
+        // TODO: Optimize piece adding.
+        for (int j = 0; j < pieceCoord.Length; ++j)
+        {
+            for (int i = 0; i < 8; ++i)
+            {
+                char charPiece = pieceCoord[pieceCoord.Length - j - 1][i];
+
+                switch(charPiece)
+                {
+                    case 'P':
+                        pieces.AddTile("pawn", Color.Black, i, j);
+                        pieces.AddTile("pawn", Color.White, i, 7 - j);
+                        break;
+
+                    case 'R':
+                        pieces.AddTile("rook", Color.Black, i, j);
+                        pieces.AddTile("rook", Color.White, i, 7 - j);
+                        break;
+
+                    case 'G':
+                        pieces.AddTile("knight", Color.Black, i, j);
+                        pieces.AddTile("knight", Color.White, i, 7 - j);
+                        break;
+
+                    case 'B':
+                        pieces.AddTile("bishop", Color.Black, i, j);
+                        pieces.AddTile("bishop", Color.White, i, 7 - j);
+                        break;
+
+                    case 'K':
+                        pieces.AddTile("king", Color.Black, i, j);
+                        pieces.AddTile("king", Color.White, i, 7 - j);
+                        break;
+
+                    case 'Q':
+                        pieces.AddTile("queen", Color.Black, i, j);
+                        pieces.AddTile("queen", Color.White, i, 7 - j);
+                        break;
+                    
+                    default:
+                        throw new System.ArgumentOutOfRangeException("Unknown piece type.");
+                }
+            }
+        }
 
         for (int i = 0; i < 8; ++i)
         {
             for (int j = 0; j < 8; ++j)
             {
                 if (i % 2 == j % 2)
-                    tiles.Add(new Tile(tileRect, tileSprite, new Color(0xF0, 0xD9, 0xB5)));
+                    tiles.AddTile("Square", new Color(0xF0, 0xD9, 0xB5), i, j);
                 else
-                    tiles.Add(new Tile(tileRect, tileSprite, new Color(0x94, 0x6f, 0x51)));
-
-                tileRect.Y += (int)tileSize.Y;
+                    tiles.AddTile("Square", new Color(0x94, 0x6f, 0x51), i, j);
             }
-            tileRect.X += (int)tileSize.X;
-            tileRect.Y = (int)tilePos.Y;
         }
-    }
-
-    public void AddPiece(Piece piece)
-    {
-        pieces.Add(piece);
     }
 
     public void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
     {
-        for (int i = 0; i < tiles.Count; ++i)
-        {
-            tiles[i].Draw(spriteBatch);
-        }
-
-        for (int i = 0; i < pieces.Count; ++i)
-        {
-            pieces[i].Draw(spriteBatch, graphicsDevice);
-        }
+        tiles.Draw(spriteBatch);
+        pieces.Draw(spriteBatch);
     }
 }

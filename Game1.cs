@@ -36,6 +36,21 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = 1080;
         _graphics.ApplyChanges();
 
+        sprite = Content.Load<Texture2D>("pawn");
+        ResourceManager.AddSprite(sprite);
+        sprite = Content.Load<Texture2D>("rook");
+        ResourceManager.AddSprite(sprite);
+        sprite = Content.Load<Texture2D>("king");
+        ResourceManager.AddSprite(sprite);
+        sprite = Content.Load<Texture2D>("queen");
+        ResourceManager.AddSprite(sprite);
+        sprite = Content.Load<Texture2D>("bishop");
+        ResourceManager.AddSprite(sprite);
+        sprite = Content.Load<Texture2D>("knight");
+        ResourceManager.AddSprite(sprite);
+        sprite = Content.Load<Texture2D>("Square");
+        ResourceManager.AddSprite(sprite);
+
         board = new Board(_graphics.GraphicsDevice);
         base.Initialize();
     }
@@ -43,72 +58,6 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        // TODO: use this.Content to load your game content here
-        sprite = Content.Load<Texture2D>("pawn");
-        tile = Content.Load<Texture2D>("Square");
-
-        board.LoadContent(_graphics.GraphicsDevice, tile);
-
-
-        string[] pieceCoord = new []
-        {
-            "PPPPPPPP",
-            "RGBQKBGR"
-        };
-
-
-        // TODO: Optimize piece adding.
-        for (int j = 0; j < pieceCoord.Length; ++j)
-        {
-            for (int i = 0; i < 8; ++i)
-            {
-                char charPiece = pieceCoord[pieceCoord.Length - j - 1][i];
-
-                switch(charPiece)
-                {
-                    case 'P':
-                        pieceSprite = Content.Load<Texture2D>("pawn");
-                        board.AddPiece(new Pawn(i, j, pieceSprite, true));
-                        board.AddPiece(new Pawn(i, 7 - j, pieceSprite, false));
-                        break;
-
-                    case 'R':
-                        pieceSprite = Content.Load<Texture2D>("rook");
-                        board.AddPiece(new Rook(i, j, pieceSprite, true));
-                        board.AddPiece(new Rook(i, 7 - j, pieceSprite, false));
-                        break;
-
-                    case 'G':
-                        pieceSprite = Content.Load<Texture2D>("knight");
-                        board.AddPiece(new Knight(i, j, pieceSprite, true));
-                        board.AddPiece(new Knight(i, 7 - j, pieceSprite, false));
-                        break;
-
-                    case 'B':
-                        pieceSprite = Content.Load<Texture2D>("bishop");
-                        board.AddPiece(new Bishop(i, j, pieceSprite, true));
-                        board.AddPiece(new Bishop(i, 7 - j, pieceSprite, false));
-                        break;
-
-                    case 'K':
-                        pieceSprite = Content.Load<Texture2D>("king");
-                        board.AddPiece(new King(i, j, pieceSprite, true));
-                        board.AddPiece(new King(i, 7 - j, pieceSprite, false));
-                        break;
-
-                    case 'Q':
-                        pieceSprite = Content.Load<Texture2D>("queen");
-                        board.AddPiece(new Queen(i, j, pieceSprite, true));
-                        board.AddPiece(new Queen(i, 7 - j, pieceSprite, false));
-                        break;
-                    
-                    default:
-                        throw new System.ArgumentOutOfRangeException("Unknown piece type.");
-                }
-            }
-        }
-        // 
     }
 
     void PieceMove()
